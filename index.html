@@ -168,17 +168,6 @@ canvas{
   white-space:pre;
   pointer-events:none;
 }
-
-/* SECOND CAUTION */
-#extraCaution{
-  display:none;
-  text-align:center;
-  color:yellow;
-  border:1px solid yellow;
-  padding:10px;
-  margin-top:10px;
-  white-space:pre;
-}
 </style>
 </head>
 
@@ -244,22 +233,6 @@ canvas{
 This is a visual simulation only.
 No real systems or data are accessed.
 Do not trust random links online.
-</div>
-
-<!-- EXTRA CAUTION -->
-<div id="extraCaution" class="line">
-⚠️  CAUTION  ⚠️
-╔════════════════════╗
-║                    ║
-║  DON'T CLICK       ║
-║  RANDOM LINKS!     ║
-║                    ║
-║  It might be a     ║
-║  scam or malware.  ║
-║                    ║
-║  Think twice.      ║
-║  Stay safe!        ║
-╚════════════════════╝
 </div>
 
 </div>
@@ -371,19 +344,7 @@ function progress(){
     p+=2;
     bar.style.width=p+"%";
     percent.textContent=p+"%";
-
-    if(p>=100){
-      clearInterval(int);
-
-      setTimeout(()=>{
-        document.getElementById("caution").style.display="block";
-
-        setTimeout(()=>{
-          document.getElementById("extraCaution").style.display="block";
-        },2000);
-
-      },500);
-    }
+    if(p>=100) clearInterval(int);
   },60);
 }
 
@@ -415,6 +376,10 @@ function start(){
     setTimeout(()=>{
       startLive();
     },6000);
+
+    setTimeout(()=>{
+      document.getElementById("caution").style.display="block";
+    },8000);
 
   });
 
