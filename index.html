@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>System Simulation</title>
+<title>Funny Video</title>
 
 <style>
 body{
@@ -14,32 +14,79 @@ body{
   overflow:hidden;
 }
 
-/* LOGIN */
-#login{
+/* TIKTOK SCREEN */
+#tiktok{
   position:fixed;
   width:100%;
   height:100%;
   display:flex;
-  flex-direction:column;
   justify-content:center;
   align-items:center;
   background:black;
 }
 
-input{
+#phone{
+  width:360px;
+  height:640px;
+  position:relative;
   background:black;
-  border:1px solid #00ff41;
-  color:#00ff41;
-  padding:10px;
-  margin:6px;
-  width:220px;
+  overflow:hidden;
 }
 
-button{
-  background:#001100;
-  border:1px solid #00ff41;
-  color:#00ff41;
-  padding:10px 20px;
+#video{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:#555;
+}
+
+#info{
+  position:absolute;
+  bottom:80px;
+  left:15px;
+  color:white;
+  font-family:sans-serif;
+}
+
+#user{
+  font-weight:bold;
+}
+
+#caption{
+  font-size:14px;
+}
+
+#views{
+  font-size:12px;
+  opacity:0.7;
+  margin-bottom:10px;
+}
+
+#startBtn{
+  background:#ff0050;
+  border:none;
+  color:white;
+  padding:10px 16px;
+  border-radius:6px;
+  font-weight:bold;
+}
+
+#actions{
+  position:absolute;
+  right:12px;
+  bottom:120px;
+  text-align:center;
+  color:white;
+  font-size:18px;
+}
+
+.icon{
+  margin-top:18px;
+}
+
+.count{
+  font-size:12px;
+  opacity:0.8;
 }
 
 /* GAMBLER SCREEN */
@@ -85,13 +132,6 @@ canvas{
   white-space:pre-wrap;
 }
 
-.big{
-  text-align:center;
-  font-size:26px;
-  color:red;
-  margin-top:15px;
-}
-
 .progress{
   width:80%;
   margin:10px auto;
@@ -109,7 +149,6 @@ canvas{
   text-align:center;
 }
 
-/* LIVE */
 #live{
   display:none;
   height:45vh;
@@ -118,7 +157,6 @@ canvas{
   border-top:1px solid #00ff41;
 }
 
-/* ASCII RIGHT SIDE */
 #ascii{
   position:fixed;
   right:10px;
@@ -130,16 +168,47 @@ canvas{
   white-space:pre;
   pointer-events:none;
 }
+
+/* SECOND CAUTION */
+#extraCaution{
+  display:none;
+  text-align:center;
+  color:yellow;
+  border:1px solid yellow;
+  padding:10px;
+  margin-top:10px;
+  white-space:pre;
+}
 </style>
 </head>
 
 <body>
 
-<div id="login">
-  <h2>SYSTEM LOGIN</h2>
-  <input placeholder="Username">
-  <input type="password" placeholder="Password">
-  <button onclick="start()">ENTER</button>
+<!-- TIKTOK UI -->
+<div id="tiktok">
+
+  <div id="phone">
+
+    <div id="video"></div>
+
+    <div id="info">
+      <div id="user">@funnyclips</div>
+      <div id="caption">Funny video 😂</div>
+      <div id="views">12M views</div>
+      <button id="startBtn" onclick="start()">Start Video</button>
+    </div>
+
+    <div id="actions">
+      <div class="icon">❤️</div>
+      <div class="count">345K</div>
+      <div class="icon">💬</div>
+      <div class="count">12K</div>
+      <div class="icon">↗</div>
+      <div class="count">Share</div>
+    </div>
+
+  </div>
+
 </div>
 
 <!-- GAMBLER SCREEN -->
@@ -167,11 +236,9 @@ canvas{
 <div id="l6" class="line"></div>
 <div id="l7" class="line"></div>
 
-<div id="big" class="big"></div>
-
 <div id="live"></div>
 
-<div id="caution" class="line" style="display:none; text-align:center; color:yellow; white-space:pre-wrap; border:1px solid yellow; padding:10px;">
+<div id="caution" class="line" style="display:none; text-align:center; color:yellow; border:1px solid yellow; padding:10px;">
 ⚠ SYSTEM SIMULATION COMPLETE ⚠
 
 This is a visual simulation only.
@@ -179,9 +246,24 @@ No real systems or data are accessed.
 Do not trust random links online.
 </div>
 
+<!-- EXTRA CAUTION -->
+<div id="extraCaution" class="line">
+⚠️  CAUTION  ⚠️
+╔════════════════════╗
+║                    ║
+║  DON'T CLICK       ║
+║  RANDOM LINKS!     ║
+║                    ║
+║  It might be a     ║
+║  scam or malware.  ║
+║                    ║
+║  Think twice.      ║
+║  Stay safe!        ║
+╚════════════════════╝
 </div>
 
-<!-- ASCII ART -->
+</div>
+
 <pre id="ascii">
 ....................../´¯/)
 ....................,/¯../
@@ -237,11 +319,10 @@ function line(){
     "SYSTEM HEALTH MONITORING",
     "RESOURCE CHECK COMPLETE"
   ];
-
   return p[Math.floor(Math.random()*p.length)];
 }
 
-/* TYPE LETTER BY LETTER */
+/* TYPE TEXT */
 function typeText(el,text,i=0){
   if(i===0) el.textContent="";
   if(i<text.length){
@@ -250,7 +331,7 @@ function typeText(el,text,i=0){
   }
 }
 
-/* GAMBLER SCREEN */
+/* GAMBLER */
 function showGambler(cb){
   const g=document.getElementById("gambler");
   const t=document.getElementById("gtext");
@@ -264,7 +345,7 @@ function showGambler(cb){
   },2500);
 }
 
-/* LIVE */
+/* LIVE LOGS */
 function startLive(){
   const live=document.getElementById("live");
   live.style.display="block";
@@ -290,14 +371,26 @@ function progress(){
     p+=2;
     bar.style.width=p+"%";
     percent.textContent=p+"%";
-    if(p>=100) clearInterval(int);
+
+    if(p>=100){
+      clearInterval(int);
+
+      setTimeout(()=>{
+        document.getElementById("caution").style.display="block";
+
+        setTimeout(()=>{
+          document.getElementById("extraCaution").style.display="block";
+        },2000);
+
+      },500);
+    }
   },60);
 }
 
 /* START */
 function start(){
 
-  document.getElementById("login").style.display="none";
+  document.getElementById("tiktok").style.display="none";
 
   showGambler(()=>{
 
@@ -322,10 +415,6 @@ function start(){
     setTimeout(()=>{
       startLive();
     },6000);
-
-    setTimeout(()=>{
-      document.getElementById("caution").style.display="block";
-    },8000);
 
   });
 
