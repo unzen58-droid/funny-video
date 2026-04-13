@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gambler Attack Simulation</title>
+
+<style>
+body{
+  margin:0;
+  background:black;
+  color:#00ff41;
+  font-family:monospace;
+  overflow:hidden;
+}
+
+/* INTRO */
+#intro{
+  position:fixed;
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  background:black;
+  text-align:center;
+}
+
+#intro h1{
+  font-size:34px;
+  color:#ff0044;
+  text-shadow:0 0 15px #ff0044;
+}
+
+#intro button{
+  margin-top:20px;
+  padding:10px 20px;
+  border:1px solid #00ff41;
+  background:#001100;
+  color:#00ff41;
+  cursor:pointer;
+}
+
+/* MAIN */
+#main{
+  display:none;
+}
+
+#header{
+  text-align:center;
+  padding:10px;
+  background:#001100;
+  border-bottom:2px solid #00ff41;
+}
+
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  opacity:0.5;
+}
+
+.line{
+  margin:6px 0;
+  white-space:pre-wrap;
+}
+
+.big{
+  text-align:center;
+  font-size:28px;
+  color:red;
+  margin-top:20px;
+}
+
+.progress{
+  width:80%;
+  margin:20px auto;
+  border:1px solid #00ff41;
+  height:18px;
+}
+
+.bar{
+  height:100%;
+  width:0%;
+  background:#00ff41;
+}
+
+.percent{
+  text-align:center;
+}
+
+.caution{
+  display:none;
+  text-align:center;
+  margin-top:30px;
+  color:yellow;
+  white-space:pre-wrap;
+  border:1px solid yellow;
+  padding:12px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- INTRO -->
+<div id="intro">
+  <h1>GAMBLER ATTACK</h1>
+  <p>Simulation Terminal</p>
+  <button onclick="start()">START</button>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+<div id="header">SYSTEM SIMULATION ACTIVE</div>
+
+<canvas id="matrix"></canvas>
+
+<div class="progress">
+  <div class="bar" id="bar"></div>
+</div>
+
+<div class="percent" id="percent">0%</div>
+
+<div id="l1" class="line"></div>
+<div id="l2" class="line"></div>
+<div id="l3" class="line"></div>
+<div id="l4" class="line"></div>
+<div id="l5" class="line"></div>
+
+<div id="big" class="big"></div>
+
+<div id="caution" class="caution">
+⚠ SYSTEM COMPLETE ⚠
+
+This is a simulation only.
+Do not click unknown links from the internet.
+Even if they come from friends or known contacts.
+</div>
+
+</div>
+
+<script>
+
+/* MATRIX */
+const canvas=document.getElementById("matrix");
+const ctx=canvas.getContext("2d");
+
+function resize(){
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+}
+resize();
+
+const chars="01ABCXYZ#$%";
+const size=14;
+let drops=Array(Math.floor(window.innerWidth/size)).fill(1);
+
+function draw(){
+  ctx.fillStyle="rgba(0,0,0,0.08)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  ctx.fillStyle="#00ff41";
+  ctx.font=size+"px monospace";
+
+  for(let i=0;i<drops.length;i++){
+    const t=chars[Math.floor(Math.random()*chars.length)];
+    ctx.fillText(t,i*size,drops[i]*size);
+    if(drops[i]*size>canvas.height) drops[i]=0;
+    drops[i]++;
+  }
+}
+
+/* TYPE */
+function type(el,text,speed=35,cb){
+  let i=0;
+  el.textContent="";
+
+  function run(){
+    if(i<text.length){
+      el.textContent+=text[i];
+      i++;
+      setTimeout(run,speed);
+    } else {
+      if(cb) cb();
+    }
+  }
+
+  run();
+}
+
+/* LOGS */
+function log(el,delay,text){
+  setTimeout(()=>{
+    type(el,text,25);
+  },delay);
+}
+
+/* PROGRESS */
+function progress(){
+  let p=0;
+  const bar=document.getElementById("bar");
+  const percent=document.getElementById("percent");
+
+  const int=setInterval(()=>{
+    p+=2;
+    bar.style.width=p+"%";
+    percent.textContent=p+"%";
+
+    if(p>=100) clearInterval(int);
+  },70);
+}
+
+/* START */
+function start(){
+
+  document.getElementById("intro").style.display="none";
+  document.getElementById("main").style.display="block";
+
+  setInterval(draw,40);
+
+  progress();
+
+  log(l1,200,"System boot sequence initialized...");
+  log(l2,1200,"Network routing active...");
+  log(l3,2200,"Security scan in progress...");
+  log(l4,3200,"Data stream monitoring enabled...");
+  log(l5,4200,"Simulation environment loaded...");
+
+  setTimeout(()=>{
+    document.getElementById("big").textContent="SIMULATION COMPLETE";
+  },6000);
+
+  setTimeout(()=>{
+    document.getElementById("caution").style.display="block";
+  },7000);
+
+}
+
+</script>
+
+</body>
+</html>
